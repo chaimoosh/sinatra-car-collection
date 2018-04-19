@@ -1,0 +1,7 @@
+<%# binding.pry %>
+<h3>Welcome, <%=@user.username%></h3>
+<h4>Create Your Tweet Here</h4>
+<form action="/tweets" method="post">
+  <textarea name="content" value="content" rows="8" cols="80"></textarea><br>
+  <button type="submit" name="submit">submit</button>
+</form>
