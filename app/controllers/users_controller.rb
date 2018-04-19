@@ -9,17 +9,17 @@ class UsersController < ApplicationController
 
   post '/signup' do
     @user = User.new(params)
-    if @user.username.empty? || @user.email.empty? || @user.password_digest == nil
+    if @user.username.empty? || @user.name.empty? || @user.password_digest == nil
       redirect to "/signup"
+    else
+      @user.save
+      session[:user_id] = @user.id
+      redirect to "/cars"
     end
-    @user.save
-    session[:user_id] = @user.id
-    redirect to "/cars"
   end
 
   get '/login' do
     if logged_in?
-      #binding.pry
       redirect to "/cars"
     else
       erb :'/users/login'
