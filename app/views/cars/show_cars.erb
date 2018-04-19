@@ -1,0 +1,9 @@
+<p>Year: <%= @car.year %></p>
+<p>Make: <%= @car.make %></p>
+<p>Model: <%= @car.model %></p>
+<p>Description: <%= @car.description %></p>
+<p>Click <a href="/cars/<%= @car.slug %>/edit">here</a> to edit your car</p>
+<form method="post" action="/cars/<%= @car.slug %>/delete">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <button type="submit" name="Delete Car">Click here to delete this car from your collection</button>
+</form>
