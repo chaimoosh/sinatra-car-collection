@@ -1,6 +1,7 @@
 class CarsController < ApplicationController
   get '/cars' do
     if logged_in?
+      @cars = Car.find_by(:user_id => session[:user_id])
       erb :'/cars/cars'
     else
       redirect to "/"
@@ -16,8 +17,12 @@ class CarsController < ApplicationController
   end
 
   get '/cars/:slug' do
-    @car = Car.find_by_slug(params[:slug])
-    erb :'/cars/show_cars'
+    if logged_in?
+      @car = Car.find_by_slug(params[:slug])
+      erb :'/cars/show_cars'
+    else
+      redirect to "/"
+    end
   end
 
   get '/cars/:slug/edit' do
@@ -26,6 +31,16 @@ class CarsController < ApplicationController
       erb :'/cars/edit_cars'
     else
       redirect to "/"
+    end
+  end
+
+  patch '/cars/:slug' do
+    @car = Car.find_by_slug(params[:slug])
+    if params["year"].empty? && params["make"].empty? && params["model"].empty? && params["description"].empty?
+      redirect to "/cars"
+    else
+      @car.update(params)
+      @car.save
     end
   end
 

@@ -1,0 +1,14 @@
+<h6>Edit your car here</h6>
+<form action="/cars/<%=@car.slug%>" method="post">
+<input id="hidden" type="hidden" name="_method" value="patch">
+  <%= @car.year %>
+  <input type="text" name="year" placeholder="Year:"><br>
+  <%= @car.make %>
+  <input type="text" name="make" placeholder="Make:"><br>
+  <%= @car.model %>
+  <input type="text" name="model" placeholder="Model:"><br>
+  Description:<br>
+  <textarea name="description" rows="8" cols="80"></textarea><br>
+  <button type="submit" name="">Edit Car</button>
+</form>
+<p><a href="/logout">Logout</a></p>
