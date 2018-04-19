@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
-      redirect to "/tweets"
+      redirect to "/cars"
     else
       erb :'/users/signup'
     end
@@ -14,13 +14,13 @@ class UsersController < ApplicationController
     end
     @user.save
     session[:user_id] = @user.id
-    redirect to "/tweets"
+    redirect to "/cars"
   end
 
   get '/login' do
     if logged_in?
       #binding.pry
-      redirect to "/tweets"
+      redirect to "/cars"
     else
       erb :'/users/login'
     end
@@ -28,12 +28,11 @@ class UsersController < ApplicationController
 
   post '/login' do
     @user = User.find_by(:username => params["username"])
-    #binding.pry
     if @user == nil
       redirect to "/signup"
     else
       session[:user_id] = @user.id
-      redirect to "/tweets"
+      redirect to "/cars"
     end
   end
 
