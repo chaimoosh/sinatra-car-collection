@@ -1,3 +1,4 @@
+require 'sinatra/flash'
 class UsersController < ApplicationController
   get '/signup' do
     if logged_in?
@@ -11,12 +12,14 @@ class UsersController < ApplicationController
     @user = User.new(:username => params["username"], :name => params["name"], :password => params["password"])
     @car = Car.new(:year => params["year"], :make => params["make"], :model => params["model"], :description => params["description"])
     if @user.username.empty? || @user.name.empty? || @user.password_digest == nil || @car.make.empty? || @car.model.empty?
+      flash[:notice] = "Please fill out all fields to continue"
       redirect to "/signup"
     else
       @user.save
       @car.user_id = @user.id
       @car.save
       session[:user_id] = @user.id
+      flash[:notice] = "You are now logged in as #{@user.name}"
       redirect to "/cars"
     end
   end
@@ -32,15 +35,18 @@ class UsersController < ApplicationController
   post '/login' do
     @user = User.find_by(:username => params["username"])
     if @user == nil || !@user.authenticate(params[:password])
+      flash[:notice] = "Please fill out all fields to continue"
       redirect to "/signup"
     else
       session[:user_id] = @user.id
+      flash[:notice] = "You are now logged in as #{@user.name}"
       redirect to "/cars"
     end
   end
 
   get '/logout' do
     session.clear
+    flash[:notice] = "You are now logged out"
     redirect to "/login"
   end
 

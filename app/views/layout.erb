@@ -8,7 +8,12 @@
     <div class="container">
       <h1>Welcome to Your Car Collection</h1>
       <h2>The Best Way To Keep Track Of Your Cars</h2>
-
+      <% flash.keys.each do |type| %>
+        <div data-alert class="flash <%= type %> alert-box radius">
+          <%= flash[type] %>
+          <a href="#" class="close">&times;</a>
+        </div>
+      <% end %>
       <%= yield %>
     </div>
 

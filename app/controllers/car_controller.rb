@@ -1,10 +1,13 @@
+require 'sinatra/flash'
 class CarsController < ApplicationController
   get '/cars' do
     if logged_in?
-      #binding.pry
-      @cars = Car.find_by(:user_id => session[:user_id])
+      @user = User.find_by_id(session[:user_id])
+      @cars = @user.cars
+      flash[:notice] = "Hello #{@user.name}"
       erb :'/cars/cars'
     else
+      flash[:notice] = "You must login to view that page"
       redirect to "/"
     end
   end
@@ -22,6 +25,7 @@ class CarsController < ApplicationController
       @car = Car.find_by_slug(params[:slug])
       erb :'/cars/show_cars'
     else
+      flash[:notice] = "You must login to view that page"
       redirect to "/"
     end
   end
@@ -38,10 +42,12 @@ class CarsController < ApplicationController
   patch '/cars/:slug' do
     @car = Car.find_by_slug(params[:slug])
     if params["year"].empty? && params["make"].empty? && params["model"].empty? && params["description"].empty?
-      redirect to "/cars"
+      flash[:notice] = "Please fill out all fields to edit your car"
+      redirect to "/cars/#{@car.slug}/edit"
     else
       @car.update(:year => params["year"], :make => params["make"], :model => params["model"], :description => params["description"])
       @car.save
+      flash[:notice] = "You have succesfully updated your car"
       redirect to "/cars/#{@car.slug}"
     end
   end
@@ -49,10 +55,12 @@ class CarsController < ApplicationController
   post '/cars' do
     @car = Car.new(params)
     if @car.make.empty? || @car.model.empty?
+        flash[:notice] = "Please fill out all fields to add your car"
       redirect to "/cars/new"
     else
       @car.user_id = session[:user_id]
       @car.save
+      flash[:notice] = "You have succesfully added a car"
       redirect to "/cars/#{@car.slug}"
     end
   end
