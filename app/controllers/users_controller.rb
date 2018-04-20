@@ -8,11 +8,14 @@ class UsersController < ApplicationController
   end
 
   post '/signup' do
-    @user = User.new(params)
-    if @user.username.empty? || @user.name.empty? || @user.password_digest == nil
+    @user = User.new(:username => params["username"], :name => params["name"], :password => params["password"])
+    @car = Car.new(:year => params["year"], :make => params["make"], :model => params["model"], :description => params["description"])
+    if @user.username.empty? || @user.name.empty? || @user.password_digest == nil || @car.make.empty? || @car.model.empty?
       redirect to "/signup"
     else
       @user.save
+      @car.user_id = @user.id
+      @car.save
       session[:user_id] = @user.id
       redirect to "/cars"
     end

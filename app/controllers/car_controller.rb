@@ -1,6 +1,7 @@
 class CarsController < ApplicationController
   get '/cars' do
     if logged_in?
+      #binding.pry
       @cars = Car.find_by(:user_id => session[:user_id])
       erb :'/cars/cars'
     else
@@ -39,8 +40,9 @@ class CarsController < ApplicationController
     if params["year"].empty? && params["make"].empty? && params["model"].empty? && params["description"].empty?
       redirect to "/cars"
     else
-      @car.update(params)
+      @car.update(:year => params["year"], :make => params["make"], :model => params["model"], :description => params["description"])
       @car.save
+      redirect to "/cars/#{@car.slug}"
     end
   end
 

@@ -1,11 +1,11 @@
 <p>Here are all your cars</p>
-<p> <% @cars.each do |car| %>
-  <%= car.year %><br>
-  <%= car.make %><br>
-  <%= car.model %><br>
-  <%= car.description %><br>
-  <a href="/cars/<%= car.slug %>/edit">Click here to edit this car</a><br>
-  <form method="post" action="/cars/<%= @car.slug %>/delete">
+<p> <% if @cars != nil %>
+  <%= @cars.year %><br>
+  <%= @cars.make %><br>
+  <%= @cars.model %><br>
+  <%= @cars.description %><br>
+  <a href="/cars/<%= @cars.slug %>/edit">Click here to edit this car</a><br>
+  <form method="post" action="/cars/<%= @cars.slug %>/delete">
     <input id="hidden" type="hidden" name="_method" value="delete">
     <button type="submit" name="Delete Car">Click here to delete this car</button>
   </form>
