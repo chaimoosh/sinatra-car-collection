@@ -21,8 +21,8 @@ class CarsController < ApplicationController
   end
 
   get '/cars/:slug' do
-    if logged_in?
-      @car = Car.find_by_slug(params[:slug])
+    @car = Car.find_by_slug(params[:slug])
+    if logged_in? && @car.user_id == current_user
       erb :'/cars/show_cars'
     else
       flash[:notice] = "You must login to view that page"
